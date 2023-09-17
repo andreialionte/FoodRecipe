@@ -1,0 +1,17 @@
+.RecipeInfo img{
+    width: 600px;
+    height: 400px;
+    object-fit:cover;
+    border-radius: 10px;
+    background-color: rgba(0,0,0,0.5);
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 200px;
+    margin-left: 200px;
+}
+
+.RecipeInfo iframe{
+    width: 800px;
+    height: 800px;
+}
