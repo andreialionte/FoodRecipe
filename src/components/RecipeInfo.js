@@ -30,7 +30,8 @@ useEffect(() => {
          console.log(show);
     }
     fetchData();
-}, [idMeal])
+}
+)
     
 
 
