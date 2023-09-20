@@ -1,12 +1,11 @@
 import React, {useState} from "react";
 import {auth} from "../auth/firebase"
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, signOut} from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [showUser, setShowUser] = useState();
 
 
     const navigate = useNavigate();
@@ -19,6 +18,13 @@ const Login = () => {
         setPassword(event.target.value);
     }
 
+
+    const handleGuest = async(event) =>{
+        event.preventDefault()
+        navigate("/")
+
+         signOut(auth)
+        }   
 
     const handleSubmit = async(event) => {
         event.preventDefault();
@@ -46,8 +52,11 @@ const Login = () => {
     <input type="email" placeholder="Email" htmlFor="email" value={email} onChange={handleEmail}/>
     {/* <label id="password">Password</label> */}
     <input type="password" placeholder="Password" htmlFor="password" value={password} onChange={handlePassword}/>
-    <h1>{showUser}</h1>
+    <div className="buttons">
     <button type="submit">Submit</button>
+    <button onClick={handleGuest}>Login as a guest</button>
+    </div>
+    <p styles={{color: "black"}}>Don't have an account? <a href="/register">Register</a></p>
 </form>
 </div>
 </div>

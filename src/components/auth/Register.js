@@ -1,10 +1,7 @@
 import React, { useState } from "react";
-import { auth } from "./firebase";
+import { auth} from "./firebase";
 import "./FormStyles.css";
-import {
-  createUserWithEmailAndPassword,
-  updateProfile, // Import the updateProfile function
-} from "firebase/auth"; // Make sure to import it from firebase/auth
+import { createUserWithEmailAndPassword,updateProfile, signOut } from "firebase/auth"; 
 
 import { useNavigate } from "react-router-dom";
 
@@ -31,6 +28,14 @@ const Register = () => {
     setName(event.target.value);
   };
 
+  const handleGuest = async(event) =>{
+    event.preventDefault()
+    navigate("/")
+
+     signOut(auth)
+    }   
+
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -41,7 +46,7 @@ const Register = () => {
           password
         );
         const user = userCredential.user;
-      const fullName = await updateProfile(user, {
+       await updateProfile(user, {
           displayName: name,
         }); // Use the updateProfile function with the user object
         console.log(user);
@@ -112,8 +117,9 @@ const Register = () => {
         {error && <p>{error}</p>}
         <div className="buttons">
         <button type="submit">Submit</button>
-        <button type="button" onClick={() => {navigate("/")}}> Login as a Guest </button>
+        <button type="button" onClick={handleGuest}> Login as a Guest </button>
         </div>
+        <p>You already have an account? <a href="/login">Login</a></p>
       </form>
     </div>
   );
