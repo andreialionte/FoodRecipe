@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { auth } from "./firebase";
 import "./FormStyles.css";
+import { Link } from "react-router-dom";
 import {
   createUserWithEmailAndPassword,
   updateProfile,
@@ -136,7 +137,7 @@ const Register = () => {
           </button>
         </div>
         <p>
-          You already have an account? <a href="/login">Login</a>
+          You already have an account? <Link to="/login">Login</Link>
         </p>
       </form>
     </div>

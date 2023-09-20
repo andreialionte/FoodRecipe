@@ -1,7 +1,7 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 import { auth } from "../auth/firebase";
 import { signInWithEmailAndPassword, signOut } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -9,22 +9,6 @@ const Login = () => {
   const [error, setError] = useState(null);
 
   const navigate = useNavigate();
-
-  // Use useEffect to observe the authentication state
-//   useEffect(() => {
-//     const unsubscribe = auth.onAuthStateChanged((authUser) => {
-//       if (authUser) {
-//         // User is logged in
-//         setUser(authUser);
-//       } else {
-//         // User is logged out
-//         setUser(null);
-//       }
-//     });
-
-//     // Clean up the observer when the component unmounts
-//     return () => unsubscribe();
-//   }, []);
 
   const handleEmail = (event) => {
     setEmail(event.target.value);
@@ -50,13 +34,13 @@ const Login = () => {
       );
       const authUser = userCredential.user;
       const user = authUser;
-      if(user) {
+      if (user) {
         navigate("/recipeFinder");
       }
     } catch (error) {
-        setError(error.message);
+      setError(error.message);
+    }
   };
-};
 
   return (
     <div>
@@ -82,9 +66,9 @@ const Login = () => {
             <button type="submit">Submit</button>
             <button onClick={handleGuest}>Login as a guest</button>
           </div>
-            <p styles={{ color: "black" }}>
-              Don't have an account? <a href="/">Register</a>
-            </p>
+          <p styles={{ color: "black" }}>
+            Don't have an account? <Link to="/">Register</Link>
+          </p>
         </form>
       </div>
     </div>
