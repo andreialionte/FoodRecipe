@@ -21,8 +21,7 @@ const Login = () => {
 
     const handleGuest = async(event) =>{
         event.preventDefault()
-        navigate("/")
-
+        navigate("/recipeFinder")
          signOut(auth)
         }   
 
@@ -39,7 +38,7 @@ const Login = () => {
             console.log(error.message);
             
         }
-        navigate("/")
+        navigate("/recipeFinder")
     }
 
 
@@ -56,7 +55,7 @@ const Login = () => {
     <button type="submit">Submit</button>
     <button onClick={handleGuest}>Login as a guest</button>
     </div>
-    <p styles={{color: "black"}}>Don't have an account? <a href="/register">Register</a></p>
+    <p styles={{color: "black"}}>Don't have an account? <a href="/">Register</a></p>
 </form>
 </div>
 </div>

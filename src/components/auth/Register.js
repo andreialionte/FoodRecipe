@@ -30,8 +30,7 @@ const Register = () => {
 
   const handleGuest = async(event) =>{
     event.preventDefault()
-    navigate("/")
-
+    navigate("/recipeFinder")
      signOut(auth)
     }   
 
