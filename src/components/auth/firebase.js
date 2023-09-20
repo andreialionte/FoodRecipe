@@ -1,18 +1,32 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import { getAnalytics } from "firebase/analytics";
+import {getAuth} from "firebase/auth";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "your-api-key",
-  authDomain: "your-auth-domain",
-  projectId: "your-project-id",
-  storageBucket: "your-storage-bucket",
-  messagingSenderId: "your-messaging-sender-id",
-  appId: "your-app-id",
-  measurementId: "your-measurement-id" // Optional, remove if not used
+  apiKey: "AIzaSyDGc_UQLtFoRinGDF6RsNsygn35VRyWsS4",
+  authDomain: "foodrecipe-e0ae2.firebaseapp.com",
+  projectId: "foodrecipe-e0ae2",
+  storageBucket: "foodrecipe-e0ae2.appspot.com",
+  messagingSenderId: "682822530494",
+  appId: "1:682822530494:web:7a7f1b36df23b0b1e035ef",
+  measurementId: "G-2JXJWXXVVL"
 };
 
-// Initialize Firebase and get the auth object
-initializeApp(firebaseConfig);
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+
+//fixed (analytics' is assigned a value but never used  no-unused-vars)
+
+console.log(analytics);
+
+
+
+
+
 export const auth = getAuth();

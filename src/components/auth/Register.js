@@ -1,7 +1,12 @@
 import React, { useState } from "react";
-import { auth} from "./firebase";
+import { auth } from "./firebase";
 import "./FormStyles.css";
-import { createUserWithEmailAndPassword,updateProfile, signOut } from "firebase/auth"; 
+import {
+  createUserWithEmailAndPassword,
+  updateProfile,
+  signOut,
+  fetchSignInMethodsForEmail,
+} from "firebase/auth";
 
 import { useNavigate } from "react-router-dom";
 
@@ -10,7 +15,7 @@ const Register = () => {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(""); 
 
   const handleEmail = (event) => {
     setEmail(event.target.value);
@@ -28,55 +33,64 @@ const Register = () => {
     setName(event.target.value);
   };
 
-  const handleGuest = async(event) =>{
-    event.preventDefault()
-    navigate("/recipeFinder")
-     signOut(auth)
-    }   
-
+  const handleGuest = async (event) => {
+    event.preventDefault();
+    navigate("/recipeFinder");
+    signOut(auth);
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
     try {
       if (password === password2) {
-        const userCredential = await createUserWithEmailAndPassword(
-          auth,
-          email,
-          password
-        );
-        const user = userCredential.user;
-       await updateProfile(user, {
-          displayName: name,
-        }); // Use the updateProfile function with the user object
-        console.log(user);
+        // Check if the email is already in use
+        const methods = await fetchSignInMethodsForEmail(auth, email);
+
+        if (methods.length === 0) {
+          const userCredential = await createUserWithEmailAndPassword(
+            auth,
+            email,
+            password
+          );
+          const user = userCredential.user;
+          await updateProfile(user, {
+            displayName: name,
+          });
+          console.log(user);
+          setError("Register successful!");
+          setTimeout(() => {
+            navigate("/login");
+          }, 3000);
+        } else {
+          setError("Email is already in use");
+        }
       }
     } catch (error) {
       setError(error.message);
     }
+
     if (password !== password2) {
       setError("Passwords do not match");
-      // stop the createuserwithemailandpassword function from running
       return;
     }
+
     if (email === "" || password === "" || password2 === "" || name === "") {
       setError("Complete all fields");
       return;
     }
-    if (
-      email.includes("@") !== "" && password !== "" && password2 !== "" && password === password2 && !auth){
-      setError("Register successful!");
-      setTimeout(() => {
-        navigate("/login");
-      }, 3000);
-    }
+
     if (password.length < 6 || password2.length < 6) {
       setError("Password must be at least 6 characters long");
       return;
     }
-    
-    if(auth){
-      setError("User already exists");
-      return
+
+    if (error.message === "Firebase: Error (auth/invalid-email).") {
+      setError("Invalid email address");
+    }
+
+    if (error.message === "Firebase: Error (auth/email-already-in-use).") {
+      setError("Email is already in use");
     }
   };
 
@@ -86,7 +100,6 @@ const Register = () => {
     <div className="register">
       <form onSubmit={handleSubmit}>
         <h1>Sign up</h1>
-        {/* <label id="email">Email</label> */}
         <input
           type="email"
           placeholder="Email"
@@ -94,7 +107,6 @@ const Register = () => {
           value={email}
           onChange={handleEmail}
         />
-        {/* <label id="password">Password</label> */}
         <input
           type="text"
           placeholder="Name"
@@ -102,7 +114,6 @@ const Register = () => {
           value={name}
           onChange={handleName}
         />
-        {/* <label id="password">Password</label> */}
         <input
           type="password"
           placeholder="Password"
@@ -110,7 +121,6 @@ const Register = () => {
           value={password}
           onChange={handlePassword}
         />
-        {/* <label id="password2">Confirm Password</label> */}
         <input
           type="password"
           placeholder="Confirm Password"
@@ -120,10 +130,14 @@ const Register = () => {
         />
         {error && <p>{error}</p>}
         <div className="buttons">
-        <button type="submit">Submit</button>
-        <button type="button" onClick={handleGuest}> Login as a Guest </button>
+          <button type="submit">Submit</button>
+          <button type="button" onClick={handleGuest}>
+            Login as a Guest
+          </button>
         </div>
-        <p>You already have an account? <a href="/login">Login</a></p>
+        <p>
+          You already have an account? <a href="/login">Login</a>
+        </p>
       </form>
     </div>
   );
