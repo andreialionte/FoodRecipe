@@ -63,7 +63,7 @@ const Register = () => {
       return;
     }
     if (
-      email.includes("@") !== "" && password !== "" && password2 !== "" && password === password2){
+      email.includes("@") !== "" && password !== "" && password2 !== "" && password === password2 && !auth){
       setError("Register successful!");
       setTimeout(() => {
         navigate("/login");
@@ -72,6 +72,11 @@ const Register = () => {
     if (password.length < 6 || password2.length < 6) {
       setError("Password must be at least 6 characters long");
       return;
+    }
+    
+    if(auth){
+      setError("User already exists");
+      return
     }
   };
 

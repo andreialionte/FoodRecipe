@@ -35,7 +35,7 @@ const Login = () => {
             console.log(user.uid);
             console.log(user.displayName);
         }catch(error){
-            console.log(error.message);
+            throw new Error("Something went wrong");
             
         }
         navigate("/recipeFinder")
