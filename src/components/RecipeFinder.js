@@ -1,6 +1,11 @@
 import { useState } from "react";
 import "./styles/styles.css";
 import { useNavigate } from "react-router-dom";
+import React from 'react';
+import { auth } from "./auth/firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
+
+
 
 const RecipeFinder = () => {
   const [meals, setMeals] = useState([]);
@@ -48,15 +53,18 @@ const RecipeFinder = () => {
     }
   }
 
+
 const loading = isLoading && <div>Loading...</div>
 
 const navigate = useNavigate();
-
-
-
+const [user] = useAuthState(auth); // what this do "?" is if user is null, it will not throw an error
 
 
   return (
+    <React.Fragment>
+      <div>
+        <h1>Hello, {user && user.displayName ? user.displayName : "Guest"}</h1>
+      </div>
     <div className="Meal">
       <h1>Meal Finder</h1>
       <input
@@ -72,17 +80,17 @@ const navigate = useNavigate();
       {loading}
       <div className="meal-position">
          {meals.map((meal) =>(
-          <div onClick={() =>{navigate(meal.idMeal)}} key={meal.key}>
+          <div>
           <h1>{meal.strMeal}</h1>
-          {/* <p>{meal.strInstructions}, <strong>This is {meal.strArea} origin</strong></p> */}
-          <img src={meal.strMealThumb} alt="meal"/>
+          <img src={meal.strMealThumb} alt="meal" onClick={() => {navigate(meal.idMeal)}} key={meal.key} />
           <span className="category">
           <h3>{meal.strCategory} {meal.strTags}, origin {meal.strArea}</h3>
           </span>
-          </div>
-         ))}
+          </div> 
+         ))} 
         </div>
     </div>
+    </React.Fragment>
   );
 }
 

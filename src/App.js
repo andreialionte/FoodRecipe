@@ -3,6 +3,9 @@ import React from 'react';
 import RecipeFinder from './components/RecipeFinder';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import RecipeInfo from './components/RecipeInfo';
+import Form from './components/auth/Form';
+import Register from './components/auth/Register';
+import Login from './components/auth/Login';
 
 
 function App() {
@@ -12,6 +15,8 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<RecipeFinder />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/:idMeal" element={<RecipeInfo />}  />
         </Routes>
       </BrowserRouter>
